@@ -1,0 +1,7 @@
+pandas_datareader
+pandas
+openai 
+yfinance
+pybind11
+cmake
+numpy

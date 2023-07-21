@@ -8,15 +8,11 @@ import numpy
 import stock_pair
 
 ticks = ["DPZ", "AAPL", "GOOG", "AMD", "GME", "SPY", "NFLX", "BA", "WMT", "GS", "XOM", "NKE", "META", "BRK-B", "MSFT"]
-avg_price = {}
+
 
 def read_csv():
-    # data = pdr
     for t in ticks:
-        data = pdr.get_data_yahoo(t, start="2022-01-01", end="2023-07-17").to_csv('./data/' + t + '.csv')
-        avg_price[t] = data['Adj Close'].mean()
-
-    print(avg_price)
+        pdr.get_data_yahoo(t, start="2022-01-01", end="2023-07-17").to_csv('./res/data/' + t + '.csv')
 
 def calculate_avg(stock_return: dict, avg_price: dict) -> None:
     path = "./res/data/"
@@ -31,15 +27,15 @@ def calculate_avg(stock_return: dict, avg_price: dict) -> None:
         stock_name = f'{file}'.split('.csv')[0]
         stock_return[stock_name] = []
         for i, stock in df.iterrows():
-            # adj_close += stock.iloc[5] # 5 is for Adj Close
+            adj_close += stock.iloc[5] # 5 is for Adj Close
             stock_return[stock_name].append(round(stock.iloc[5], 2))
 
-        # rounded_val = abs(round((adj_close / sample_size), 2))
-        # avg_price[stock_name] = stock_return[stock_name]
+        rounded_val = round((adj_close / sample_size), 2)
+        avg_price[stock_name] = rounded_val
         adj_close = 0
 
 def main():
-    # avg_price = {}
+    avg_price = {}
     stock_return = {}
     # covariance = []
     # CALL THIS IF YOU THIS IS YOUR FIRST TIME RUNNING THIS PROGRAM

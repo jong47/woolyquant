@@ -1,4 +1,4 @@
 .vscode
 ./src/build
-./res
-./extern/pybind11
+./res/*
+./extern/*

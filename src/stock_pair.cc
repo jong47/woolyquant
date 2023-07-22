@@ -51,10 +51,6 @@ float calculateCovariance(u_int16_t sampleSize, pybind11::array_t<float> returnP
         float priceB = ptrB[i];
 
         sigma += ((priceA - averagePriceA) * (priceB - averagePriceB));
-        // std::cout << "line " << i << " " << ((priceA - averagePriceA) * (priceB - averagePriceB)) << std::endl;
-        // std::cout << priceA << ' ' << averagePriceA << '\n';
-        // std::cout << priceB << ' ' << averagePriceB << '\n';
-        // std::cout << sigma << '\n';
     }
 
     // Cleanup 

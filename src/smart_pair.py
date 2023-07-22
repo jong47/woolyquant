@@ -7,12 +7,13 @@ import numpy
 import stock_pair
 from pandas_datareader import data as pdr
 from statsmodels.regression.linear_model import OLS
+from statsmodels.tsa.stattools import adfuller
 
 def read_csv(ticks):
     for t in ticks:
         pdr.get_data_yahoo(t, start="2021-01-01", end="2023-07-17").to_csv('./res/data/' + t + '.csv')
 
-def calculate_avg(return_percent: dict, avg_price: dict, std_dev: list) -> None:
+def get_stock_data(return_percent: dict, avg_price: dict, std_dev: list) -> None:
     path = "./res/data/"
     for file in os.listdir(path):
         full_path = f'{path}/{file}'
@@ -33,23 +34,21 @@ def calculate_avg(return_percent: dict, avg_price: dict, std_dev: list) -> None:
         avg_price[stock_name] = data.mean()
 
 def main():
+    ticks = ["DPZ", "AAPL", "GOOG", "AMD", "GME", "SPY", "NFLX", "BA", "WMT", "GS", "XOM", "NKE", "META", "BRK-B", "MSFT"]
     avg_price = {}
     return_percent = {}
     covariance = {}
     std_dev = []
-    ticks = ["DPZ", "AAPL", "GOOG", "AMD", "GME", "SPY", "NFLX", "BA", "WMT", "GS", "XOM", "NKE", "META", "BRK-B", "MSFT"]
 
-    # CALL THIS IF YOU THIS IS YOUR FIRST TIME RUNNING THIS PROGRAM
     read_csv(ticks)
-    # AFTERWARDS COMMENT IT OUT OTHERWISE YOU WILL MAKE UNNECESSARY CALLS
     
-    calculate_avg(return_percent=return_percent, avg_price=avg_price, std_dev=std_dev)
+    
+    get_stock_data(return_percent=return_percent, avg_price=avg_price, std_dev=std_dev)
     
     # Covariance = Delta(Return ABC - Average ABC) * (Return XYZ - Average XYZ) / (Sample Size) - 1
-    print("-------- COVARIANCE/CORRELATION/ BETWEEN TWO STOCK PAIRS --------")
+    print("-------- COVARIANCE/CORRELATION/ADF TEST/P-VAL BETWEEN TWO STOCK PAIRS --------")
     for i in range(0, len(avg_price) - 1):
         for j in range(i + 1, len(avg_price)):
-            # stock_pair_name = '{0} & {1}'.format(ticks[i], ticks[j])
             covariance = stock_pair.calculateCovariance(len(return_percent[ticks[0]]), 
                                                         numpy.array(return_percent[ticks[i]]), 
                                                         numpy.array(return_percent[ticks[j]]),
@@ -60,12 +59,13 @@ def main():
 
             model = OLS(numpy.array(return_percent[ticks[i]]), numpy.array(return_percent[ticks[j]]))
             results = model.fit()
-            # alpha = results.params['Intercept']
-            # beta = results.params['B']
 
-            print(ticks[i] + ' & ' + ticks[j] + ': ', covariance, corr, results.params)
+            residuals = results.resid
+            beta = results.params
+            adf_test = adfuller(residuals)
+            p_val = adf_test[1]
 
-            # '{ticks[i]} & {ticks[j]}'.format(ticks[i], ticks[j])
+            print(ticks[i] + ' & ' + ticks[j] + ': ', covariance, corr, adf_test[0], p_val)
 
     # Correlation
 

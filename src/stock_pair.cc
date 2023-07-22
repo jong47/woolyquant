@@ -44,7 +44,7 @@ float calculateCovariance(u_int16_t sampleSize, pybind11::array_t<float> returnP
 
     float sigma = 0.0f;
 
-    for (int i = 0; i < sampleSize; i++) {
+    for (int i = 1; i < sampleSize; i++) {
         // Access A array data
         float priceA = ptrA[i];
         // Access B array data 
@@ -66,14 +66,9 @@ float calculateCovariance(u_int16_t sampleSize, pybind11::array_t<float> returnP
     return covariance;
 }
 
-int pie(int a) {
-    return a + 5;
-}
-
 PYBIND11_MODULE(stock_pair, stock_pair) {
     stock_pair.doc() = "pybind11 plugin to speed up calculations for Covariance, Correlation, and Cointegration.";
     stock_pair.def("calculateCovariance", &calculateCovariance, "A function which calculates the covariance between two stocks");
-    stock_pair.def("pie", &pie, "");
 }
 
 // int main(void) {

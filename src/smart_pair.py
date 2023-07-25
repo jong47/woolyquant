@@ -9,6 +9,7 @@ import json
 from pandas_datareader import data as pdr
 from statsmodels.regression.linear_model import OLS
 from statsmodels.tsa.stattools import adfuller
+from dotenv import load_dotenv
 
 GPT_MODEL = "gpt-3.5-turbo-0613"
 
@@ -43,6 +44,8 @@ def chatGPT_conversation(prompt) -> str:
     pass
 
 def main():
+    load_dotenv()
+    openai.api_key = os.getenv("OPENAI_API_KEY")
     ticks = ["DPZ", "AAPL", "GOOGL", "GOOG", "BABA", "JNJ", "JPM", "BAC", "TMO", "AVGO", "CVX", "DHR", "V", "COST", "CRM", "DIS", "CSCO", "QCOM", "AMD", "GME", "SPY", "NFLX", "BA", "WMT", "GS", "XOM", "NKE", "META", "BRK-A", "BRK-B", "MSFT", "AMZN", "NVDA", "TSLA"]
     mean_price = {}
     return_percent = {}
@@ -50,8 +53,6 @@ def main():
     std_dev = {}
 
     read_csv(ticks)
-
-    # print(openai.Model.list(api_key="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"))
     
     get_stock_data(return_percent=return_percent, mean_price=mean_price, std_dev=std_dev)
     

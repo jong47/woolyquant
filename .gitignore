@@ -2,3 +2,4 @@
 ./src/build
 ./res/*
 ./extern/*
+*.env

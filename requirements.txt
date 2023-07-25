@@ -6,3 +6,4 @@ pybind11
 cmake
 numpy
 statsmodels
+python-dotenv

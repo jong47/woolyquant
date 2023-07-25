@@ -13,7 +13,5 @@ Computing the rolling means for the spread time series
 Performing linear regression to quantify mean reversion speed
 Any core math-heavy computations that require speed
 
-
-
 Use ChatGPT for:
 Evaluating criteria and determining if stocks qualify as a tradable pair

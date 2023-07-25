@@ -1,14 +1,14 @@
-# Stock analysis software that recommends trading strategies using ChatGPT Model 0613 
+## Stock analysis software that recommends trading strategies using ChatGPT Model 0613 
 Calculates the covariance, correlation, and cointegration between stock pairs using the Engle-Granger two step method using ADF-test to test if the pair is stationary and an OLS regression model to determine the linear relationship between the pairs.
 
-# Requirements:
+## Requirements:
 Must have Docker software installed on your computer. If you are using macOS, then you must have the brew docker casket installed on your computer. 
 
 ## To run on macOS:
 ```
 ./run.sh
 ```
-# Or Windows:
+## Or Windows:
 ```
 ./run.ps1
 ```

@@ -37,15 +37,21 @@ def get_stock_data(return_percent: dict, mean_price: dict, std_dev: list) -> Non
         # Then we calculate the mean percentage as part of the covariance
         mean_price[stock_name] = data.mean()
 
-def chatGPT_conversation(prompt) -> str:
-    response = openai.ChatCompletion.create(model=GPT_MODEL, messages=prompt)
+# def chatGPT_conversation(parameters) -> None:
+#     with open('./src/stock_prompt.json') as fp:
+#         prompt = json.load(fp)
 
-    api_usage = response['usage']
-    pass
+#     print(type(prompt))
+
+#     response = openai.ChatCompletion.create(model=GPT_MODEL, messages=prompt)
+#     # print(prompt)
+
+
+#     # api_usage = response['usage']
 
 def main():
-    load_dotenv()
-    openai.api_key = os.getenv("OPENAI_API_KEY")
+    load_dotenv('./src/keys.env')
+    # openai.api_key = os.getenv("OPENAI_API_KEY")
     ticks = ["DPZ", "AAPL", "GOOGL", "GOOG", "BABA", "JNJ", "JPM", "BAC", "TMO", "AVGO", "CVX", "DHR", "V", "COST", "CRM", "DIS", "CSCO", "QCOM", "AMD", "GME", "SPY", "NFLX", "BA", "WMT", "GS", "XOM", "NKE", "META", "BRK-A", "BRK-B", "MSFT", "AMZN", "NVDA", "TSLA"]
     mean_price = {}
     return_percent = {}
@@ -79,7 +85,9 @@ def main():
                 adf_test = adfuller(residuals)
                 p_val = adf_test[1]
 
-                print(ticks[i] + ' & ' + ticks[j] + ': ', covariance, corr, adf_test[0], p_val, regression_slope)
+                parameters = f'{ticks[i]} {ticks[j]}: {covariance} {corr} {adf_test[0]} {p_val} {regression_slope}'.format(ticks[i], ticks[j], covariance, corr, adf_test[0], p_val, regression_slope)
+                print(parameters)
+                # chatGPT_conversation(parameters=parameters)
                 # if p_val > 0.05:
                 #     print(ticks[i] + ' & ' + ticks[j] + ': ' + 'null hypothesis is true')
 

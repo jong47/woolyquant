@@ -51,6 +51,7 @@ def main():
     return_percent = {}
     covariance = {}
     std_dev = {}
+    divergences = {}
 
     read_csv(ticks)
     
@@ -66,24 +67,24 @@ def main():
                                                         mean_price[ticks[i]],
                                                         mean_price[ticks[j]])
             
+            # Correlation
             corr = covariance / (std_dev[ticks[i]] * std_dev[ticks[j]])
-
-            model = OLS(numpy.array(return_percent[ticks[i]]), numpy.array(return_percent[ticks[j]]))
-            results = model.fit()
-
-            residuals = results.resid
-            regression_slope = results.params
-            adf_test = adfuller(residuals)
-            p_val = adf_test[1]
-
             if corr > 0.79:
+                # Cointegration
+                model = OLS(numpy.array(return_percent[ticks[i]]), numpy.array(return_percent[ticks[j]]))
+                results = model.fit()
+
+                residuals = results.resid
+                regression_slope = results.params
+                adf_test = adfuller(residuals)
+                p_val = adf_test[1]
+
                 print(ticks[i] + ' & ' + ticks[j] + ': ', covariance, corr, adf_test[0], p_val, regression_slope)
-            # if p_val > 0.05:
-            #     print(ticks[i] + ' & ' + ticks[j] + ': ' + 'null hypothesis is true')
+                # if p_val > 0.05:
+                #     print(ticks[i] + ' & ' + ticks[j] + ': ' + 'null hypothesis is true')
 
-    # Correlation
-
-    # Cointegration
+    # print(return_percent["SPY"])
+    # print(return_percent["MSFT"])
 
 if __name__ == "__main__":
     yf.pdr_override()

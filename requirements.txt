@@ -7,4 +7,4 @@ cmake
 numpy
 statsmodels
 python-dotenv
-alpaca-py
+# alpaca-py

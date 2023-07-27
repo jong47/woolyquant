@@ -2,7 +2,6 @@ import os
 import pandas as pd
 import openai 
 import yfinance as yf
-import ctypes
 import numpy
 import stock_pair
 import json
@@ -11,14 +10,14 @@ from statsmodels.regression.linear_model import OLS
 from statsmodels.tsa.stattools import adfuller
 from dotenv import load_dotenv
 
-GPT_MODEL = "gpt-3.5-turbo-0613"
+GPT_MODEL = "gpt-3.5-turbo"
 
 def read_csv(ticks) -> None:
     for t in ticks:
-        pdr.get_data_yahoo(t, start="2021-01-01", end="2023-07-24").to_csv('./res/data/' + t + '.csv')
+        pdr.get_data_yahoo(t, start="2021-01-01", end="2023-07-24").to_csv('./res/data/stocks/' + t + '.csv')
 
 def get_stock_data(return_percent: dict, mean_price: dict, std_dev: list) -> None:
-    path = "./res/data/"
+    path = "./res/data/stocks"
     for file in os.listdir(path):
         full_path = f'{path}/{file}'
         df = pd.read_csv(full_path)
@@ -37,21 +36,23 @@ def get_stock_data(return_percent: dict, mean_price: dict, std_dev: list) -> Non
         # Then we calculate the mean percentage as part of the covariance
         mean_price[stock_name] = data.mean()
 
-# def chatGPT_conversation(parameters) -> None:
-#     with open('./src/stock_prompt.json') as fp:
-#         prompt = json.load(fp)
+def chatGPT_conversation(parameters) -> None:
+    with open('./src/stock_prompt.json') as fp:
+        prompt = json.load(fp)
+    
 
-#     print(type(prompt))
+    # prompt['content'] = parameters
+    messages = [{ "role": "user", "content": f'{prompt} {parameters}' }]
 
-#     response = openai.ChatCompletion.create(model=GPT_MODEL, messages=prompt)
-#     # print(prompt)
+    response = openai.ChatCompletion.create(model=GPT_MODEL, messages=messages)
+    print(response)
 
-
-#     # api_usage = response['usage']
+    api_usage = response['usage']
+    print("\n\nCURRENT API USAGE\n\n", api_usage)
 
 def main():
     load_dotenv('./src/keys.env')
-    # openai.api_key = os.getenv("OPENAI_API_KEY")
+    openai.api_key = os.getenv("OPENAI_API_KEY")
     ticks = ["DPZ", "AAPL", "GOOGL", "GOOG", "BABA", "JNJ", "JPM", "BAC", "TMO", "AVGO", "CVX", "DHR", "V", "COST", "CRM", "DIS", "CSCO", "QCOM", "AMD", "GME", "SPY", "NFLX", "BA", "WMT", "GS", "XOM", "NKE", "META", "BRK-A", "BRK-B", "MSFT", "AMZN", "NVDA", "TSLA"]
     mean_price = {}
     return_percent = {}
@@ -86,8 +87,8 @@ def main():
                 p_val = adf_test[1]
 
                 parameters = f'{ticks[i]} {ticks[j]}: {covariance} {corr} {adf_test[0]} {p_val} {regression_slope}'.format(ticks[i], ticks[j], covariance, corr, adf_test[0], p_val, regression_slope)
-                print(parameters)
-                # chatGPT_conversation(parameters=parameters)
+                chatGPT_conversation(parameters=parameters)
+
                 # if p_val > 0.05:
                 #     print(ticks[i] + ' & ' + ticks[j] + ': ' + 'null hypothesis is true')
 

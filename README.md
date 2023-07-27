@@ -2,7 +2,12 @@
 Calculates the covariance, correlation, and cointegration between stock pairs using the Engle-Granger two step method using ADF-test to test if the pair is stationary and an OLS regression model to determine the linear relationship between the pairs.
 
 ## Technologies used:
-*yfinance, Docker, Pandas, Alpaca, OpenAI, Pybind11*
+yfinance
+Docker
+Pandas
+Alpaca
+OpenAI
+Pybind11
 
 ## Requirements:
 Must have Docker software installed on your computer. If you are using macOS, then you must have the homebrew installed correctly and the brew docker casket installed on your computer in order for my script to work.

@@ -8,7 +8,8 @@ WORKDIR /app
 
 COPY . /app
 
-RUN mkdir -p /app/res/data
+RUN mkdir -p /app/res/data/pairs
+RUN mkdir -p /app/res/data/stocks
 
 COPY requirements.txt .
 RUN pip3 install -r requirements.txt

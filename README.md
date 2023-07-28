@@ -1,4 +1,4 @@
-## Stock analysis software that recommends trading strategies using ChatGPT 3.5 Model Turbo 
+## Created a stock analysis software that analyzes historical stock data and recommends trading strategies using ChatGPT 3.5 Model Turbo 
 Calculates the covariance, correlation, and cointegration between stock pairs using the Engle-Granger two step method using ADF-test to test if the pair is stationary and an OLS regression model to determine the linear relationship between the pairs.
 
 ## Technologies used:

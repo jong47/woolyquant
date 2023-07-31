@@ -1,5 +1,6 @@
-pandas_datareader
+setuptools
 pandas
+pandas_datareader
 openai 
 yfinance
 pybind11
@@ -7,4 +8,5 @@ cmake
 numpy
 statsmodels
 python-dotenv
-# alpaca-py
+alpaca-py
+psycopg2

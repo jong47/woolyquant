@@ -16,19 +16,12 @@ float calculateCovariance(u_int16_t sampleSize, pybind11::array_t<float> returnP
     float sigma = 0.0f;
 
     for (u_int16_t i = 1; i < sampleSize; i++) {
-        // Access A array data
         float percentA = ptrA[i];
-        // Access B array data 
         float percentB = ptrB[i];
 
         sigma += ((percentA - averagePercentA) * (percentB - averagePercentB));
     }
 
-    // Cleanup 
-    // returnPercentA.request().ptr = nullptr;
-    // returnPercentB.request().ptr = nullptr;
-    // float covariance = ;
-    // sigma = 0.00f;
     return (sigma / (sampleSize - 1));
 }
 

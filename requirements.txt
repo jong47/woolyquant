@@ -10,3 +10,4 @@ statsmodels
 python-dotenv
 alpaca-py
 psycopg2
+requests

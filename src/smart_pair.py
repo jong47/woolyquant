@@ -2,15 +2,29 @@ import os
 import pandas as pd
 import openai 
 import yfinance as yf
-import numpy
+# import numpy
 import stock_pair
 import json
 from pandas_datareader import data as pdr
 from statsmodels.regression.linear_model import OLS
 from statsmodels.tsa.stattools import adfuller
 from dotenv import load_dotenv
+import ast
 
 GPT_MODEL = "gpt-3.5-turbo"
+
+class SmartPair:
+    def __init__(self) -> None:
+        self.return_percent = {}
+        self.return_price = {}
+        self.mean_return_percent = {}
+        self.mean_return_price = {}
+        self.covariance = {}
+        self.std_dev = {}
+        self.spread_series = {}
+
+
+    pass
 
 def read_csv(ticks) -> None:
     for t in ticks:
@@ -44,17 +58,21 @@ def get_stock_data(return_percent: dict, return_price: dict, mean_return_percent
         mean_return_price[stock_name] = value_data.mean()
 
 def chatGPT_conversation(pair, parameters) -> None:
-    with open('./src/stock_prompt.json') as fp:
+    with open('./src/pairs_trading_prompt.json') as fp:
         prompt = json.load(fp)
     
     # prompt['content'] = parameters
     messages = [{ "role": "user", "content": f'{prompt} {parameters}' }]
 
     response = openai.ChatCompletion.create(model=GPT_MODEL, messages=messages)
-    with open(f'./res/data/pairs/{pair}.json', 'w', encoding='utf-8') as data:
-        json.dump(response, data, ensure_ascii=False, indent=4)
 
-    # print(response)
+    content = response.choices[0].message["content"].replace('\"', '\\"').replace('\\n', '\\""').replace('\\\\"', '\\"')
+    data = json.loads(content)
+        
+    with open(f'./res/data/pairs/{pair}.json', 'w', encoding='utf-8') as f:
+        ast.literal_eval(json.dump(data, f, ensure_ascii=False, indent=4))
+
+    print(response)
 
     api_usage = response['usage']
     print("\n\nCURRENT API USAGE\n\n", api_usage)
@@ -65,7 +83,10 @@ def load_api_key() -> None:
 
 def main():
     load_api_key()
-    ticks = ["DPZ", "AAPL", "GOOGL", "GOOG", "BABA", "JNJ", "JPM", "BAC", "TMO", "AVGO", "CVX", "DHR", "V", "COST", "CRM", "DIS", "CSCO", "QCOM", "AMD", "GME", "SPY", "NFLX", "BA", "WMT", "GS", "XOM", "NKE", "META", "BRK-A", "BRK-B", "MSFT", "AMZN", "NVDA", "TSLA"]
+    ticks = ["DPZ", "AAPL", "GOOGL", "GOOG", "BABA", "JNJ", "JPM", "BAC", "TMO", 
+             "AVGO", "CVX", "DHR", "V", "MA", "COST", "CRM", "DIS", "CSCO", "QCOM", "AMD", 
+             "GME", "SPY", "NFLX", "BA", "WMT", "GS", "XOM", "NKE", "META", "BRK-A", 
+             "BRK-B", "MSFT", "AMZN", "NVDA", "TSLA"]
     return_percent = {}
     return_price = {}
     mean_return_percent = {}

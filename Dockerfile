@@ -21,4 +21,4 @@ RUN g++ -O2 -shared -std=c++11 -fPIC `python3 -m pybind11 --includes` ./src/stoc
 # RUN git submodule update --init
 RUN cmake 
 
-CMD [ "python3", "./src/cria.py" ]
+CMD [ "python3", "./src/smart_pair.py" ]

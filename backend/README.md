@@ -2,7 +2,7 @@
 This backend is written in 100% Golang. It primarily uses the in-built net/http library with chi router and chi cors. 
 
 # Dependencies
-- [Chi Router](https://github.com/go-chi/chi/v5)
+- [Chi Router](https://github.com/go-chi/chi)
 - [Chi Cors](https://github.com/go-chi/cors)
 - [Godot Env](https://github.com/joho/godotenv)
 

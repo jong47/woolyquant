@@ -3,6 +3,7 @@ package main
 import (
 	"encoding/json"
 	"fmt"
+	"main/internal/auth"
 	"main/internal/database"
 	"net/http"
 	"time"
@@ -46,7 +47,7 @@ func (apiConf *apiConfig) handlerCreateBot(w http.ResponseWriter, r *http.Reques
 // The bot's ID is then used to make other requests
 // This is essentially a middleware router and will allow for other requests to be made
 func (apiConf *apiConfig) handlerGetBotByAPIKey(w http.ResponseWriter, r *http.Request) {
-	apiKey, err := auth.getAPIKey(r.Header)
+	apiKey, err := auth.GetAPIKey(r.Header)
 	if err != nil {
 		respondWithError(w, http.StatusForbidden, fmt.Sprintf("Client-side error, Invalid API key: %v", err))
 		return

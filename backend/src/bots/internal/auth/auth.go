@@ -12,7 +12,7 @@ import (
 
 // getAPIKey extracts the Api key from the request headers and returns it as a string.
 // Authorization format: <ApiKey> {Insert Api key here}
-func getAPIKey(headers http.Header) (string, error) {
+func GetAPIKey(headers http.Header) (string, error) {
 	var auth_key string = headers.Get("Authorization")
 	if auth_key == "" {
 		return "", errors.New("no api key provided")

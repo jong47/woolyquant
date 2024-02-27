@@ -68,6 +68,7 @@ func main() {
 	v1Router.Get("/err", handlerErr)
 
 	v1Router.Post("/create-bot", apiConf.handlerCreateBot)
+	v1Router.Get("/get-bot", apiConf.handlerGetBotByAPIKey)
 
 	// Creates a new router path using /v1 as a prefix for /healthz
 	// This means that /v1/healthz will be the endpoint for the handlerReadiness function

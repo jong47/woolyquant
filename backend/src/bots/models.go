@@ -8,11 +8,12 @@ import (
 )
 
 type CreateBotParams struct {
-	ID         uuid.UUID `jsozn:"id" db:"id" validate:"required"`
-	CreatedAt  time.Time `json:"created_at" db:"created_at" validate:"required"`
-	UpdatedAt  time.Time `json:"updated_at" db:"updated_at" validate:"required"`
-	Name       string    `json:"name" db:"name" validate:"required"`
-	Securities []byte    `json:"securities" db:"securities" validate:"required"`
+	ID         uuid.UUID `json:"id"`
+	CreatedAt  time.Time `json:"created_at"`
+	UpdatedAt  time.Time `json:"updated_at"`
+	Name       string    `json:"name"`
+	Securities []byte    `json:"securities"`
+	ApiKey     string    `json:"api_key"`
 }
 
 func databaseCreateBotToBot(botConfig database.BotConfig) CreateBotParams {
@@ -22,5 +23,6 @@ func databaseCreateBotToBot(botConfig database.BotConfig) CreateBotParams {
 		UpdatedAt:  botConfig.UpdatedAt,
 		Name:       botConfig.Name,
 		Securities: botConfig.Securities,
+		ApiKey:     botConfig.ApiKey,
 	}
 }

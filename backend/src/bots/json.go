@@ -6,7 +6,7 @@ import (
 	"net/http"
 )
 
-func respondWithError(w http.ResponseWriter, code int, message string) {
+func RespondWithError(w http.ResponseWriter, code int, message string) {
 	if code > 499 {
 		log.Println("500 Internal Server Error: " + message)
 	}
@@ -15,10 +15,10 @@ func respondWithError(w http.ResponseWriter, code int, message string) {
 		Error string `json:"error"`
 	}
 
-	respondWithJSON(w, code, errResponse{Error: message})
+	RespondWithJSON(w, code, errResponse{Error: message})
 }
 
-func respondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
+func RespondWithJSON(w http.ResponseWriter, code int, payload interface{}) {
 	var data []byte = nil
 	var err error = nil
 

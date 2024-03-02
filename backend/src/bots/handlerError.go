@@ -4,6 +4,6 @@ import (
 	"net/http"
 )
 
-func handlerErr(w http.ResponseWriter, r *http.Request) {
-	respondWithError(w, http.StatusInternalServerError, "An error occurred")
+func HandlerErr(w http.ResponseWriter, r *http.Request) {
+	RespondWithError(w, http.StatusInternalServerError, "An error occurred")
 }

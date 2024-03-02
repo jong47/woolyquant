@@ -1,4 +1,4 @@
-package main
+package common
 
 import (
 	"main/internal/database"
@@ -16,7 +16,7 @@ type CreateBotParams struct {
 	ApiKey     string    `json:"api_key"`
 }
 
-func databaseCreateBotToBot(botConfig database.BotConfig) CreateBotParams {
+func DatabaseCreateBotToBot(botConfig database.BotConfig) CreateBotParams {
 	return CreateBotParams{
 		ID:         botConfig.ID,
 		CreatedAt:  botConfig.CreatedAt,

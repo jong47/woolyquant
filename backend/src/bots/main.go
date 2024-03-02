@@ -15,7 +15,9 @@ import (
 	_ "github.com/lib/pq"
 )
 
-// Defined struct to hold database queries
+// Uppercase ApiConfig allows you to export the struct
+// This is useful for testing, and also useful to maintain
+// separate files for different parts of the feature
 type apiConfig struct {
 	DB *database.Queries
 }
@@ -64,11 +66,11 @@ func main() {
 
 	// v1Router acts as middleware for route patterns that begin with /v1
 	// Checks health of router patterns
-	v1Router.Get("/healthz", handlerReadiness)
-	v1Router.Get("/err", handlerErr)
+	v1Router.Get("/healthz", HandlerReadiness)
+	v1Router.Get("/err", HandlerErr)
 
-	v1Router.Post("/create-bot", apiConf.handlerCreateBot)
-	v1Router.Get("/get-bot", apiConf.handlerGetBotByAPIKey)
+	v1Router.Post("/create-bot", apiConf.HandlerCreateBot)
+	v1Router.Get("/get-bot", apiConf.MiddlewareAuth(apiConf.HandlerGetBotByAPIKey))
 
 	// Creates a new router path using /v1 as a prefix for /healthz
 	// This means that /v1/healthz will be the endpoint for the handlerReadiness function

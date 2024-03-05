@@ -1,19 +1,20 @@
 package common
 
 import (
-	"main/internal/database"
+	"bots/internal/database"
+	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
 )
 
 type CreateBotParams struct {
-	ID         uuid.UUID `json:"id"`
-	CreatedAt  time.Time `json:"created_at"`
-	UpdatedAt  time.Time `json:"updated_at"`
-	Name       string    `json:"name"`
-	Securities []byte    `json:"securities"`
-	ApiKey     string    `json:"api_key"`
+	ID         uuid.UUID       `json:"id"`
+	CreatedAt  time.Time       `json:"created_at"`
+	UpdatedAt  time.Time       `json:"updated_at"`
+	Name       string          `json:"name"`
+	Securities json.RawMessage `json:"securities"`
+	ApiKey     string          `json:"api_key"`
 }
 
 func DatabaseCreateBotToBot(botConfig database.BotConfig) CreateBotParams {

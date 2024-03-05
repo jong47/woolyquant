@@ -5,7 +5,6 @@
 package database
 
 import (
-	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
@@ -16,6 +15,6 @@ type BotConfig struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 	Name       string
-	Securities json.RawMessage
+	Securities []byte
 	ApiKey     string
 }

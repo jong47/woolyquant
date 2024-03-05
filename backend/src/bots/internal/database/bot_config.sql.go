@@ -7,7 +7,6 @@ package database
 
 import (
 	"context"
-	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
@@ -26,7 +25,7 @@ type CreateBotParams struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 	Name       string
-	Securities json.RawMessage
+	Securities []byte
 }
 
 func (q *Queries) CreateBot(ctx context.Context, arg CreateBotParams) (BotConfig, error) {

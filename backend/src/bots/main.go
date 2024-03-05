@@ -1,9 +1,9 @@
-package main
+package bots
 
 import (
+	"bots/internal/database"
 	"database/sql"
 	"log"
-	"main/internal/database"
 	"net/http"
 	"os"
 
@@ -69,8 +69,8 @@ func main() {
 	v1Router.Get("/healthz", HandlerReadiness)
 	v1Router.Get("/err", HandlerErr)
 
-	v1Router.Post("/create-bot", apiConf.HandlerCreateBot)
-	v1Router.Get("/get-bot", apiConf.MiddlewareAuth(apiConf.HandlerGetBotByAPIKey))
+	v1Router.Post("/trading-bot", apiConf.HandlerCreateBot)
+	v1Router.Get("/trading-bot", apiConf.MiddlewareAuth(apiConf.HandlerGetBotByAPIKey))
 
 	// Creates a new router path using /v1 as a prefix for /healthz
 	// This means that /v1/healthz will be the endpoint for the handlerReadiness function

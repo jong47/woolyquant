@@ -1,10 +1,10 @@
-package main
+package bots
 
 import (
+	"bots/common"
+	"bots/internal/database"
 	"encoding/json"
 	"fmt"
-	"main/common"
-	"main/internal/database"
 	"net/http"
 	"time"
 
@@ -13,7 +13,8 @@ import (
 
 func (apiConf *apiConfig) HandlerCreateBot(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
-		Name string `json:"name" validate:"required"`
+		Name       string `json:"name" validate:"required"`
+		Securities string `json:"securities" validate:"required"`
 	}
 
 	decoder := json.NewDecoder(r.Body)
@@ -30,7 +31,7 @@ func (apiConf *apiConfig) HandlerCreateBot(w http.ResponseWriter, r *http.Reques
 		CreatedAt:  time.Now().UTC(),
 		UpdatedAt:  time.Now().UTC(),
 		Name:       params.Name,
-		Securities: []byte(`{,	"securities": [	{			"symbol": "AAPL",			"quantity": 10		},		{			"symbol": "GOOGL",			"quantity": 5		}	]}`),
+		Securities: json.RawMessage(params.Securities),
 	})
 
 	if err != nil {

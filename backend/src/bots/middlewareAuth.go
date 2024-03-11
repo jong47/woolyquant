@@ -1,9 +1,9 @@
-package bots
+package main
 
 import (
-	"bots/internal/auth"
-	"bots/internal/database"
 	"fmt"
+	"main/internal/auth"
+	"main/internal/database"
 	"net/http"
 )
 
@@ -19,7 +19,7 @@ func (cfg *apiConfig) MiddlewareAuth(handler authedHandler) http.HandlerFunc {
 
 		// Most important thing we can do with contexts is to cancel them, since Go allows us to track context states
 		// This checks if the API key exists on our database
-		bot, err := cfg.DB.GetBotByAPIKey(r.Context(), apiKey)
+		bot, err := cfg.Queries.GetBotByAPIKey(r.Context(), apiKey)
 		if err != nil {
 			RespondWithError(w, http.StatusNotFound, fmt.Sprintf("server-side error, bot id not found, %v", err))
 			return

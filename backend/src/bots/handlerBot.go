@@ -1,10 +1,10 @@
-package bots
+package main
 
 import (
-	"bots/common"
-	"bots/internal/database"
 	"encoding/json"
 	"fmt"
+	"main/common"
+	"main/internal/database"
 	"net/http"
 	"time"
 
@@ -13,25 +13,32 @@ import (
 
 func (apiConf *apiConfig) HandlerCreateBot(w http.ResponseWriter, r *http.Request) {
 	type parameters struct {
-		Name       string `json:"name" validate:"required"`
-		Securities string `json:"securities" validate:"required"`
+		Name       string `json:"name"`
+		Securities []struct {
+			Stock string  `json:"stock"`
+			Qty   uint32  `json:"qty"`
+			Price float64 `json:"price"`
+		} `json:"securities"`
 	}
 
 	decoder := json.NewDecoder(r.Body)
 	params := parameters{}
 	err := decoder.Decode(&params)
 
+	defer r.Body.Close()
+
 	if err != nil {
 		RespondWithError(w, http.StatusBadRequest, fmt.Sprintf("Client-side error, Invalid JSON:", err))
 		return
 	}
 
-	testBot, err := apiConf.DB.CreateBot(r.Context(), database.CreateBotParams{
+	buf, _ := json.Marshal(params.Securities)
+	testBot, err := apiConf.Queries.CreateBot(r.Context(), database.CreateBotParams{
 		ID:         uuid.New(),
 		CreatedAt:  time.Now().UTC(),
 		UpdatedAt:  time.Now().UTC(),
 		Name:       params.Name,
-		Securities: json.RawMessage(params.Securities),
+		Securities: buf,
 	})
 
 	if err != nil {

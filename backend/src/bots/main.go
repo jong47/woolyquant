@@ -1,14 +1,15 @@
-package bots
+package main
 
 import (
-	"bots/internal/database"
 	"database/sql"
 	"log"
+	"main/internal/database"
 	"net/http"
 	"os"
 
 	"github.com/go-chi/chi/v5"
 	"github.com/go-chi/cors"
+	"github.com/jackc/pgx/v5/pgxpool"
 	"github.com/joho/godotenv"
 
 	// Force package to be imported and initialized
@@ -19,9 +20,11 @@ import (
 // This is useful for testing, and also useful to maintain
 // separate files for different parts of the feature
 type apiConfig struct {
-	DB *database.Queries
+	Queries *database.Queries
+	Pool    *pgxpool.Pool
 }
 
+// TODO: Implement pgx/v5 and then use the pgx marshaller in order to resolve the struct bug
 func main() {
 	godotenv.Load()
 	var (
@@ -52,7 +55,7 @@ func main() {
 	}
 
 	apiConf = apiConfig{
-		DB: database.New(conn),
+		Queries: database.New(conn),
 	}
 
 	router.Use(cors.Handler(cors.Options{

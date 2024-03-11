@@ -1,8 +1,8 @@
 package common
 
 import (
-	"bots/internal/database"
 	"encoding/json"
+	"main/internal/database"
 	"time"
 
 	"github.com/google/uuid"

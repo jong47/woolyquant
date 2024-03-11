@@ -7,6 +7,7 @@ package database
 
 import (
 	"context"
+	"encoding/json"
 	"time"
 
 	"github.com/google/uuid"
@@ -14,7 +15,7 @@ import (
 
 const createBot = `-- name: CreateBot :one
 INSERT INTO bot_config (id, created_at, updated_at, name, securities, api_key) 
-VALUES ($1, $2, $3, $4, $5, 
+VALUES ($1, $2, $3, $4, $5,
     encode(sha256(random()::text::bytea), 'hex')
 ) 
 RETURNING id, created_at, updated_at, name, securities, api_key
@@ -25,7 +26,7 @@ type CreateBotParams struct {
 	CreatedAt  time.Time
 	UpdatedAt  time.Time
 	Name       string
-	Securities []byte
+	Securities json.RawMessage
 }
 
 func (q *Queries) CreateBot(ctx context.Context, arg CreateBotParams) (BotConfig, error) {

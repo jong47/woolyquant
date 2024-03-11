@@ -4,7 +4,7 @@ CREATE TABLE bot_config (
     created_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     updated_at TIMESTAMP WITHOUT TIME ZONE NOT NULL,
     name TEXT NOT NULL,  
-    securities BYTEA NOT NULL
+    securities jsonb NOT NULL
 );
 
 -- +goose Down
